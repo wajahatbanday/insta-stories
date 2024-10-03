@@ -3,30 +3,47 @@
 import { Box, Column, Row, Text } from "sentinal-ui";
 import Stories, { WithSeeMore } from "react-insta-stories";
 import { useCallback, useState } from "react";
+import { backgroundColor } from "styled-system";
 const Header = ({ url, name, time }) => {
   return (
-    <Box position={"relative"} top={0} left={0}>
-      <Row>
-        <Box>{url}</Box>
-        <Column>
-          <Text color={"black"}>{name}</Text>
-          <Text>{time}</Text>
-        </Column>
-      </Row>
-    </Box>
+    <Row gap={"12px"} flexDirection={"row"} alignItems={"center"} ml={"12px"}>
+      <Box
+        backgroundImage={`url(${url})`}
+        backgroundRepeat={"no-repeat"}
+        width={40}
+        height={40}
+        backgroundPosition={"center"}
+        backgroundSize={"contain"}
+        border={"2px solid white"}
+        borderRadius={"50px"}
+      ></Box>
+      <Column>
+        <Text color={"white"} fontSize={16}>
+          {name}
+        </Text>
+        <Text color={"white"} fontSize={10}>
+          {time}
+        </Text>
+      </Column>
+    </Row>
   );
 };
 // Test component used in the stories
 export const TestComponent = ({ header, isPaused }: any) => {
   return (
-    <Box position={"relative"}>
-      <Box>
-        <Header url={"hie"} name={"imran"} time={"undefined"} />
+    <Box display={"flex"}>
+      <Box position={"relative"} top={-22} left={0}>
+        <Header
+          url={"https://picsum.photos/50/50"}
+          name={"Mohd Imran"}
+          time={"posted 3 min ago"}
+        />
       </Box>
-
-      <Box style={{ background: "green", padding: 20, width: "100%" }}>
-        <Text style={{ marginTop: "100%", marginBottom: 0 }}>🌝</Text>
-        <Text color={"white"}>{isPaused ? "Paused" : "Playing"}</Text>
+      <Box width={"100vw"} justifyContent={"center"} display={"flex"}>
+        <Box border={"1px solid red"} height={"70vh"} width={"22vw"}>
+          <Text style={{ marginTop: "100%", marginBottom: 0 }}>🌝</Text>
+          <Text color={"white"}>{isPaused ? "Paused" : "Playing"}</Text>
+        </Box>
       </Box>
     </Box>
   );
@@ -85,7 +102,7 @@ const CustomStoryContent = ({ story, action }) => {
 const allStories = [
   [
     {
-      url: "https://picsum.photos/500/500",
+      url: "https://picsum.photos/450/450",
       duration: 1000,
       seeMore: ({ close }) => <div onClick={close}>Click to close this.</div>,
       header: {
@@ -210,40 +227,47 @@ export default function StoriesV3() {
 
   console.log(viewedStories);
   return (
-    <Box flexDirection={"row"} border={"1px solid red"}>
+    <Box
+      flexDirection={"row"}
+      border={"1px solid red"}
+      justifyContent={"center"}
+    >
       <Text color={"white"}>{message}</Text>
       {allStories.map((story, index) => (
         <Box key={index}>
           <Box
             border={
-              viewedStories.includes(index) ? "2px solid grey" : "2px solid red"
+              viewedStories.includes(index) ? "3px solid grey" : "3px solid red"
             }
-            width={50}
-            height={50}
+            width={60}
+            height={60}
             borderRadius={"50px"}
             onClick={() => handleClick(index)}
           ></Box>
 
           {openStoryIndex === index && (
-            <Stories
-              stories={story}
-              defaultInterval={1000}
-              loader={<Loader />}
-              storyContainerStyles={{ border: "1px solid white" }}
-              width={"80vw"}
-              progressContainerStyles={{ border: "1px solid blue" }}
-              progressWrapperStyles={{ border: "1px solid green" }}
-              loop={false}
-              onNext={onNext}
-              onStoryEnd={onStoryEnd}
-              onAllStoriesEnd={onAllStoriesEnd}
-              onPrevious={onPrevious}
-              onStoryStart={onStoryStart}
-              keyboardNavigation={true}
-              currentIndex={storyIndex}
-              preloadCount={1}
-              progressStyles={{ border: "1px solid white" }}
-            />
+            <Box width={["80vw", "40vw"]}>
+              <Stories
+                stories={story}
+                defaultInterval={1000}
+                loader={<Loader />}
+                storyContainerStyles={{
+                  border: "1px solid white",
+                  backgroundColor: "grey",
+                }}
+                progressWrapperStyles={{ border: "1px solid red" }}
+                loop={false}
+                onNext={onNext}
+                onStoryEnd={onStoryEnd}
+                onAllStoriesEnd={onAllStoriesEnd}
+                onPrevious={onPrevious}
+                onStoryStart={onStoryStart}
+                keyboardNavigation={true}
+                currentIndex={storyIndex}
+                preloadCount={1}
+                progressStyles={{ border: "1px solid white" }}
+              />
+            </Box>
           )}
         </Box>
       ))}
