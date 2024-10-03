@@ -1,7 +1,5 @@
 "use client";
-
 import { Box, GlassBox, StyledInputBox, TextArea, Text } from "sentinal-ui";
-
 export default function Home() {
   return (
     <Box
