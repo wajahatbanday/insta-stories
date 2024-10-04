@@ -2,7 +2,7 @@
 
 import { Box, Column, Row, Text } from "sentinal-ui";
 import Stories from "react-insta-stories";
-import { useCallback, useState, useEffect } from "react";
+import { useCallback, useState, useEffect, SetStateAction } from "react";
 import { useId } from "react";
 type User = {
   user: string;
@@ -89,15 +89,15 @@ const users = [
     stories: [
       {
         storyId: 11,
-        content: ({ action, story }) => <StoryComponent user="Suhaib" />,
+        content: () => <StoryComponent user="Suhaib" />,
       },
       {
         storyId: 12,
-        content: ({ action, story }) => <StoryComponent user="Suhaib" />,
+        content: () => <StoryComponent user="Suhaib" />,
       },
       {
         storyId: 13,
-        content: ({ action, story }) => <StoryComponent user="Suhaib" />,
+        content: () => <StoryComponent user="Suhaib" />,
       },
     ],
   },
@@ -108,15 +108,15 @@ const users = [
     stories: [
       {
         storyId: 14,
-        content: ({ action, story }) => <StoryComponent user="Wajahat" />,
+        content: () => <StoryComponent user="Wajahat" />,
       },
       {
         storyId: 15,
-        content: ({ action, story }) => <StoryComponent user="Wajahat" />,
+        content: () => <StoryComponent user="Wajahat" />,
       },
       {
         storyId: 16,
-        content: ({ action, story }) => <StoryComponent user="Wajahat" />,
+        content: () => <StoryComponent user="Wajahat" />,
       },
     ],
   },
@@ -127,15 +127,15 @@ const users = [
     stories: [
       {
         storyId: 17,
-        content: ({ action, story }) => <StoryComponent user="Iqram" />,
+        content: () => <StoryComponent user="Iqram" />,
       },
       {
         storyId: 18,
-        content: ({ action, story }) => <StoryComponent user="Iqram" />,
+        content: () => <StoryComponent user="Iqram" />,
       },
       {
         storyId: 19,
-        content: ({ action, story }) => <StoryComponent user="Iqram" />,
+        content: () => <StoryComponent user="Iqram" />,
       },
     ],
   },
@@ -146,16 +146,16 @@ const users = [
     stories: [
       {
         storyId: 20,
-        content: ({ action, story }) => <StoryComponent user="Imran" />,
+        content: () => <StoryComponent user="Imran" />,
       },
       {
         storyId: 21,
-        content: ({ action, story }) => <StoryComponent user="Imran" />,
+        content: () => <StoryComponent user="Imran" />,
       },
 
       {
         storyId: 22,
-        content: ({ action, story }) => <StoryComponent user="Imran" />,
+        content: () => <StoryComponent user="Imran" />,
       },
     ],
   },
@@ -167,33 +167,37 @@ export default function StoriesV3() {
   const [activeStoryGroup, setActiveStoryGroup] = useState(null);
   const [storyIndex, setStoryIndex] = useState(0);
   const [message, setMessage] = useState("");
-  const [viewedStories, setViewedStories] = useState([]);
+  const [viewedStories, setViewedStories] = useState<number[]>([]);
   const [viewedIndividualStories, setViewedIndividualStories] = useState([]);
 
-  const handleOpenStory = useCallback(
-    (index) => {
-      setActiveStoryGroup(index);
-      setStoryIndex(0);
-      if (!viewedStories.includes(index)) {
-        setViewedStories((prev) => [...prev, index]);
-      }
-    },
-    [viewedStories]
-  );
+  useEffect(() => {
+    localStorage.setItem(
+      "viewedIndividualStories",
+      JSON.stringify(viewedIndividualStories)
+    );
+  }, [viewedIndividualStories]);
+
+  const handleOpenStory = (index: SetStateAction<null>) => {
+    setActiveStoryGroup(index);
+    setStoryIndex(0);
+    if (!viewedStories.includes(index)) {
+      setViewedStories((prev) => [...prev, index]);
+    }
+  };
 
   const handleCloseStory = useCallback(() => {
     setActiveStoryGroup(null);
     setStoryIndex(0);
   }, []);
 
-  const onStoryStart = (index, story) => {
+  const onStoryStart = (index: string | number, story: any) => {
     const currentStoryIndex = users[activeStoryGroup].stories[index].storyId;
     if (!viewedStories.includes(currentStoryIndex)) {
       setViewedIndividualStories((prev) => [...prev, currentStoryIndex]);
     }
   };
 
-  const onStoryEnd = (index, story) => {
+  const onStoryEnd = (index: any, story: any) => {
     setMessage("nothing as of now");
   };
 
@@ -208,7 +212,7 @@ export default function StoriesV3() {
     } else {
       handleCloseStory();
     }
-  }, [activeStoryGroup, users.length, viewedStories, handleCloseStory]);
+  }, [activeStoryGroup, viewedStories, handleCloseStory]);
 
   const onNext = useCallback(() => {
     setStoryIndex((prevIndex) => prevIndex + 1);
@@ -218,10 +222,6 @@ export default function StoriesV3() {
     setStoryIndex((prevIndex) => Math.max(0, prevIndex - 1));
   }, []);
 
-  useEffect(() => {
-    console.log("Viewed individual stories:", viewedIndividualStories);
-  }, [viewedIndividualStories]);
-  console.log(viewedStories);
   return (
     <Box
       width={"100%"}
@@ -305,8 +305,8 @@ export default function StoriesV3() {
               onStoryStart={onStoryStart}
               onStoryEnd={onStoryEnd}
               onAllStoriesEnd={onAllStoriesEnd}
-              onNextItem={onNext}
-              onPrevItem={onPrevious}
+              onNext={onNext}
+              onPrevious={onPrevious}
               currentIndex={storyIndex}
             />
           </Box>
