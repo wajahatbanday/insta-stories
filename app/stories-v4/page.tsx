@@ -3,89 +3,102 @@
 import { Box, Column, Row, Text } from "sentinal-ui";
 import Stories from "react-insta-stories";
 import { useCallback, useState, useEffect } from "react";
+import { useId } from "react";
+type User = {
+  user: string;
+};
 
-// Original StoryComponent from the first example
-const StoryComponent = ({ user }) => (
-  <Box
-    width="100%"
-    height="100%"
-    display="flex"
-    justifyContent="center"
-    alignItems="center"
-  >
+const StoryComponent = ({ user }: User) => {
+  return (
     <Box
-      width="350px"
-      height="400px"
-      borderRadius="10px"
-      overflow="hidden"
-      alignSelf="center"
+      width="100%"
+      height="100%"
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
     >
-      <Row
-        display="flex"
-        flexDirection={"row"}
-        alignItems="center"
-        padding="10px"
-        height="10%"
-        backgroundColor="white"
-      >
-        <Box
-          backgroundImage={`url("https://via.placeholder.com/40")`}
-          backgroundPosition={"center"}
-          backgroundSize={"contain"}
-          width="30px"
-          height="30px"
-          borderRadius="50%"
-          marginRight="10px"
-          border={"1px solid black"}
-        />
-        <Text fontSize={14} color="black">
-          {user}
-        </Text>
-      </Row>
-
-      <Box width="100%" height="80%">
-        <Box
-          as="img"
-          src="https://via.placeholder.com/400"
-          alt="Post"
-          width="100%"
-          height="100%"
-        />
-      </Box>
       <Box
-        display="flex"
-        flexDirection={"row"}
-        alignItems="center"
-        justifyContent="space-around"
-        padding="10px"
-        height="10%"
-        borderTop="1px solid #ddd"
-        backgroundColor="white"
+        width="350px"
+        height="400px"
+        borderRadius="10px"
+        overflow="hidden"
+        alignSelf="center"
       >
-        <Text fontSize={14} color="black">
-          ❤️ Like
-        </Text>
-        <Text fontSize={14} color="black">
-          💬 Comment
-        </Text>
-        <Text fontSize={14} color="black">
-          🔗 Share
-        </Text>
+        <Row
+          display="flex"
+          flexDirection={"row"}
+          alignItems="center"
+          padding="10px"
+          height="10%"
+          backgroundColor="white"
+        >
+          <Box
+            backgroundImage={`url("https://via.placeholder.com/40")`}
+            backgroundPosition={"center"}
+            backgroundSize={"contain"}
+            width="30px"
+            height="30px"
+            borderRadius="50%"
+            marginRight="10px"
+            border={"1px solid black"}
+          />
+          <Text fontSize={14} color="black">
+            {user}
+          </Text>
+        </Row>
+
+        <Box width="100%" height="80%">
+          <Box
+            as="img"
+            src="https://via.placeholder.com/400"
+            alt="Post"
+            width="100%"
+            height="100%"
+          />
+        </Box>
+        <Box
+          display="flex"
+          flexDirection={"row"}
+          alignItems="center"
+          justifyContent="space-around"
+          padding="10px"
+          height="10%"
+          borderTop="1px solid #ddd"
+          backgroundColor="white"
+        >
+          <Text fontSize={14} color="black">
+            ❤️ Like
+          </Text>
+          <Text fontSize={14} color="black">
+            💬 Comment
+          </Text>
+          <Text fontSize={14} color="black">
+            🔗 Share
+          </Text>
+        </Box>
       </Box>
     </Box>
-  </Box>
-);
+  );
+};
 
-// Original users data from the first example
 const users = [
   {
     id: 1,
     name: "Suhaib",
     profileImage: "https://randomuser.me/api/portraits/men/1.jpg",
     stories: [
-      { content: ({ action, story }) => <StoryComponent user="Suhaib" /> },
-      { content: ({ action, story }) => <StoryComponent user="Suhaib" /> },
-      { content: ({ action, story }) => <StoryComponent user="Suhaib" /> },
+      {
+        storyId: 11,
+        content: ({ action, story }) => <StoryComponent user="Suhaib" />,
+      },
+      {
+        storyId: 12,
+        content: ({ action, story }) => <StoryComponent user="Suhaib" />,
+      },
+      {
+        storyId: 13,
+        content: ({ action, story }) => <StoryComponent user="Suhaib" />,
+      },
     ],
   },
   {
@@ -93,9 +106,18 @@ const users = [
     name: "Wajahat",
     profileImage: "https://randomuser.me/api/portraits/men/2.jpg",
     stories: [
-      { content: ({ action, story }) => <StoryComponent user="Wajahat" /> },
-      { content: ({ action, story }) => <StoryComponent user="Wajahat" /> },
-      { content: ({ action, story }) => <StoryComponent user="Wajahat" /> },
+      {
+        storyId: 14,
+        content: ({ action, story }) => <StoryComponent user="Wajahat" />,
+      },
+      {
+        storyId: 15,
+        content: ({ action, story }) => <StoryComponent user="Wajahat" />,
+      },
+      {
+        storyId: 16,
+        content: ({ action, story }) => <StoryComponent user="Wajahat" />,
+      },
     ],
   },
   {
@@ -103,9 +125,18 @@ const users = [
     name: "Iqram",
     profileImage: "https://randomuser.me/api/portraits/men/3.jpg",
     stories: [
-      { content: ({ action, story }) => <StoryComponent user="Iqram" /> },
-      { content: ({ action, story }) => <StoryComponent user="Iqram" /> },
-      { content: ({ action, story }) => <StoryComponent user="Iqram" /> },
+      {
+        storyId: 17,
+        content: ({ action, story }) => <StoryComponent user="Iqram" />,
+      },
+      {
+        storyId: 18,
+        content: ({ action, story }) => <StoryComponent user="Iqram" />,
+      },
+      {
+        storyId: 19,
+        content: ({ action, story }) => <StoryComponent user="Iqram" />,
+      },
     ],
   },
   {
@@ -113,9 +144,19 @@ const users = [
     name: "Imran",
     profileImage: "https://randomuser.me/api/portraits/men/4.jpg",
     stories: [
-      { content: ({ action, story }) => <StoryComponent user="Imran" /> },
-      { content: ({ action, story }) => <StoryComponent user="Imran" /> },
-      { content: ({ action, story }) => <StoryComponent user="Imran" /> },
+      {
+        storyId: 20,
+        content: ({ action, story }) => <StoryComponent user="Imran" />,
+      },
+      {
+        storyId: 21,
+        content: ({ action, story }) => <StoryComponent user="Imran" />,
+      },
+
+      {
+        storyId: 22,
+        content: ({ action, story }) => <StoryComponent user="Imran" />,
+      },
     ],
   },
 ];
@@ -127,6 +168,7 @@ export default function StoriesV3() {
   const [storyIndex, setStoryIndex] = useState(0);
   const [message, setMessage] = useState("");
   const [viewedStories, setViewedStories] = useState([]);
+  const [viewedIndividualStories, setViewedIndividualStories] = useState([]);
 
   const handleOpenStory = useCallback(
     (index) => {
@@ -145,15 +187,17 @@ export default function StoriesV3() {
   }, []);
 
   const onStoryStart = (index, story) => {
-    setMessage(`Story ${index + 1} has started!`);
+    const currentStoryIndex = users[activeStoryGroup].stories[index].storyId;
+    if (!viewedStories.includes(currentStoryIndex)) {
+      setViewedIndividualStories((prev) => [...prev, currentStoryIndex]);
+    }
   };
 
   const onStoryEnd = (index, story) => {
-    setMessage(`Story ${index + 1} has ended!`);
+    setMessage("nothing as of now");
   };
 
   const onAllStoriesEnd = useCallback(() => {
-    setMessage("All Stories Viewed");
     const nextGroupIndex = activeStoryGroup + 1;
     if (nextGroupIndex < users.length) {
       setActiveStoryGroup(nextGroupIndex);
@@ -171,11 +215,13 @@ export default function StoriesV3() {
   }, []);
 
   const onPrevious = useCallback(() => {
-    console.log("Moving to previous story");
     setStoryIndex((prevIndex) => Math.max(0, prevIndex - 1));
   }, []);
-  console.log(viewedStories);
 
+  useEffect(() => {
+    console.log("Viewed individual stories:", viewedIndividualStories);
+  }, [viewedIndividualStories]);
+  console.log(viewedStories);
   return (
     <Box
       width={"100%"}
@@ -235,7 +281,7 @@ export default function StoriesV3() {
             </Box>
           ))}
         </Row>
-        {activeStoryGroup !== null && (
+        {activeStoryGroup !== null ? (
           <Box
             width={"100%"}
             height={"100%"}
@@ -264,7 +310,7 @@ export default function StoriesV3() {
               currentIndex={storyIndex}
             />
           </Box>
-        )}
+        ) : null}
       </Box>
       <Text>{message}</Text>
     </Box>
