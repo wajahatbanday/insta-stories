@@ -183,6 +183,13 @@ export default function StoriesV3() {
     number[]
   >([]);
 
+  useEffect(() => {
+    localStorage.setItem(
+      "viewedIndividualStories",
+      JSON.stringify(viewedIndividualStories)
+    );
+  }, [viewedIndividualStories]);
+
   const handleOpenStory = useCallback(
     (userId: number) => {
       const userIndex = users.findIndex((user) => user.id === userId);
@@ -238,12 +245,6 @@ export default function StoriesV3() {
   const onPrevious = useCallback(() => {
     setStoryIndex((prevIndex) => Math.max(0, prevIndex - 1));
   }, []);
-
-  useEffect(() => {
-    console.log("Viewed individual stories:", viewedIndividualStories);
-  }, [viewedIndividualStories]);
-
-  console.log("Viewed Stories:", viewedStories);
 
   return (
     <Box
